@@ -1,0 +1,31 @@
+Aim: program to convert colour image to grey and HSV
+
+
+Code :
+
+% Read the color image
+colorImage = imread('beamer.jpg');
+
+% Convert the color image to grayscale
+grayImage = rgb2gray(colorImage);
+
+% Convert the color image to HSV color space
+hsvImage = rgb2hsv(colorImage);
+
+% Display the original, grayscale, and HSV images
+figure;
+
+% Original color image
+subplot(1, 3, 1);
+imshow(colorImage);
+title('Original Color Image');
+
+% Grayscale image
+subplot(1, 3, 2);
+imshow(grayImage);
+title('Grayscale Image');
+
+% HSV color space
+subplot(1, 3, 3);
+imshow(hsvImage);
+title('HSV Color Space');
