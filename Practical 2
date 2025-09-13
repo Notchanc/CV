@@ -1,0 +1,52 @@
+Aim: using histogram for image quality analysis 
+
+% 1. Calculate the Histogram of a given image.
+% 2. Histogram Equalization.
+
+INPUT :-
+
+% Read the image
+i = imread("download (1).jpg");
+
+% Compute the image complement
+j = imcomplement(i);
+
+% Display the histograms of the images figure;
+subplot(2, 2, 1);
+imhist(i);
+title("Histogram of Original Image");
+subplot(2, 2, 2);
+imhist(j);
+title("Histogram of Complement Image");
+
+% Display the original and complemented images
+subplot(2, 2, 3);
+imshow(i);
+title("Original Image");
+subplot(2, 2, 4);
+imshow(j);
+title("Complement Image");
+
+% Read the image
+originalImage = imread("download (2).jpg");
+
+% Convert the image to grayscale (if it's not already)
+grayImage = rgb2gray(originalImage);
+
+% Apply histogram equalization
+equalizedImage = histeq(grayImage);
+
+% Display the original and equalized images figure;
+subplot(2, 2, 1);
+imshow(grayImage);
+title("Original Grayscale Image");
+subplot(2, 2, 2);
+imshow(equalizedImage);
+title("Equalized Image");
+% Display histograms for original and equalized images
+subplot(2, 2, 3);
+imhist(grayImage); % Corrected from inhist
+title("Histogram of Original Image");
+subplot(2, 2, 4);
+imhist(equalizedImage); % Corrected from inhist
+title("Histogram of Equalized Image");
