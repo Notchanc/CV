@@ -1,0 +1,37 @@
+Aim: finding threshold of images
+
+1. Program to Find the Threshold of an Grayscale Image B] Program to Find the Threshold of an RGB Image
+
+Code :-  
+% Read the input image  
+originalImage = imread('beamer.jpg'); % Make sure beamer.jpg exists in your folder  
+% Convert the image to grayscale (if it's not already)  
+grayImage = rgb2gray(originalImage);  
+% Display the original grayscale image
+
+figure;  
+imshow(grayImage);  
+title('Original Grayscale Image');  
+% Determine the threshold using Otsu's method  
+threshold = graythresh(grayImage);  
+binaryImage = imbinarize(grayImage, threshold);  
+figure;  
+imshow(binaryImage);  
+title('Binary Image (Thresholded)');  
+rgbImage = imread('beamer.jpg');  
+% Display the original RGB image
+
+figure;  
+imshow(rgbImage);  
+title('Original RGB Image');  
+% Convert the RGB image to grayscale  
+grayImage = rgb2gray(rgbImage);  
+% Determine the threshold using Otsu's method  
+threshold = graythresh(grayImage);
+% Convert the grayscale image to binary  
+binaryImage = imbinarize(grayImage, threshold);  
+% Display the binary image  
+figure;  
+imshow(binaryImage);  
+title('Binary Image (Thresholded)');  
+
