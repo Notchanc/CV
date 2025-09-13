@@ -1,0 +1,23 @@
+Aim: program to estimate and subtract the background of an image 
+
+Code :-  
+% Read the input image  
+originalImage = imread('beamer.jpg');  
+% Convert the image to grayscale (if it's not already)  
+grayImage = rgb2gray(originalImage);  
+% Apply a threshold to segment the background  
+threshold = 150;  
+% Adjust the threshold value as needed  
+binaryMask = grayImage < threshold;  
+% Create a mask for the foreground (inverse of the background mask)  
+foregroundMask = ~binaryMask;  
+% Subtract the background by setting background pixels to zero  
+backgroundSubtractedImage = originalImage;  
+backgroundSubtractedImage(repmat(foregroundMask, [1, 1, 3])) = 0;  
+% Display the original image and the background-subtracted image figure;  
+subplot(1, 2, 1);  
+imshow(originalImage);  
+title('Original Image');  
+subplot(1, 2, 2);  
+imshow(backgroundSubtractedImage);  
+title('Background-Subtracted Image');
