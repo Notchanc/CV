@@ -1,0 +1,45 @@
+Aim:Basic operation on image
+
+
+
+matlab
+1. Program to change the Brightness of Image.
+2. To Flip the image around the vertical and horizontal line.
+3. Display the color components of the image.
+4. Display of gray scale images.
+5. To find the negative of an image.
+
+code:
+
+% Load image
+I = imread('beamer.jpg');
+
+% 1. Program to change the Brightness of Image.
+I1 = I - 50;
+figure, imshow(I1);
+I2 = I + 50;
+figure, imshow(I2);
+
+% 2. To Flip the image around the vertical and horizontal line.
+% DISPLAY THE ORIGINAL AND FLIPPED IMAGE
+j = fliplr(I); % Corrected from flipIr
+k = flipud(I);
+figure, imshow(I), title('Original Image');
+figure, imshow(j), title('Flipped Horizontally');
+figure, imshow(k), title('Flipped Vertically');
+
+% 3. Display the color components of the image.
+redChannel = I(:, :, 1); % Corrected extra semicolon
+greenChannel = I(:, :, 2);
+blueChannel = I(:, :, 3);
+figure, imshow(redChannel), colormap([[0:1/255:1]', zeros(256,1), zeros(256,1)]), colorbar;
+figure, imshow(greenChannel), colormap([zeros(256,1), [0:1/255:1]', zeros(256,1)]), colorbar;
+figure, imshow(blueChannel), colormap([zeros(256,1), zeros(256,1), [0:1/255:1]']), colorbar;
+
+% 4. Display of gray scale images.
+a = im2gray(I);
+figure, imshow(a); % Added from the second image
+
+% 5. To find the negative of an image.
+neg = 255 - I; % For uint8 images
+figure, imshow(neg);
