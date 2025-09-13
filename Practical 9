@@ -1,0 +1,28 @@
+Aim: display of colour images 
+
+Code:
+
+I = imread("llama.jpg");
+figure;
+subplot(2,2,1);
+imshow(I);
+title("original image");
+
+% Convert the RGB image to grayscale
+graylmage = rgb2gray(I);
+subplot(2,2,2);
+imshow(grayImage);
+title("grayscale image");
+
+% Convert the RGB image to hsv
+hsvImage = rgb2hsv(I);
+subplot(2,2,3);
+imshow(hsvImage);
+title("HSV image");
+
+% Convert the RGB image to ycbcr
+ycbcrImage = rgb2ycbcr(I);
+subplot(2,2,4);
+imshow(ycbcrImage);
+title("YCBCR image");
+
