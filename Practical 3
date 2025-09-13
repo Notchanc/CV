@@ -1,0 +1,98 @@
+Aim: program for image filtering 
+
+ 1. Low pass filter
+   1. Average filter
+   2. Weighted Average filter
+   3. Median filter
+ 2. High pass filters using => 1) Sobel operator 2) Laplacian operator
+ 3. Design non-linear filtering.
+
+INPUT :-
+% Read the input image
+originalImage = imread('download (2).jpg');
+% Convert the image to double precision for calculations
+originalImage = im2double(originalImage);
+% Define the size of the filter (e.g., 3x3 or 5x5)
+filterSize = 3;
+% Apply the average filter
+averageFiltered = imfilter(originalImage, fspecial('average', filterSize)); % Corrected 'average!' to 'average'
+% Display the original and filtered images
+figure;
+subplot(1, 2, 1);
+imshow(originalImage);
+title('Original Image');
+subplot(1, 2, 2);
+imshow(averageFiltered);
+title('Average Filtered Image');
+
+% Define the weights for the filter (e.g., a 3x3 filter)
+weights = [1 2 1; 2 4 2; 1 2 1] / 16;
+% Apply the weighted average filter
+weightedAverageFiltered = imfilter(originalImage, weights);
+% Display the original and filtered images
+figure;
+subplot(1, 2, 1);
+imshow(originalImage);
+title('Original Image');
+subplot(1, 2, 2);
+imshow(weightedAverageFiltered);
+title('Weighted Average Filtered Image');
+
+% Read the input image (repeated, can be removed)
+originalImage = imread('MATLAB Drive/download (2).jpg');
+% Convert the image to double precision for calculations
+originalImage = im2double(originalImage);
+% Convert the image to grayscale (if it's not already)
+grayImage = rgb2gray(originalImage);
+% Define the size of the filter (e.g., \(3 \times 3\) or \(5 \times 5\))
+filterSize = [3, 3];
+% Apply the median filter
+medianFiltered = medfilt2(grayImage, filterSize); % Corrected medfill2 to medfilt2
+% Display the original and filtered images
+figure;
+subplot(1, 2, 1);
+imshow(originalImage);
+title('Original Image');
+subplot(1, 2, 2);
+imshow(medianFiltered);
+title('Median Filtered Image');
+
+% Read the input image (instruction only, variable already exists)
+% Convert the image to grayscale (if it's not already) (instruction only, variable already exists)
+grayImage = rgb2gray(originalImage);
+% Apply the Sobel operator for horizontal and vertical edges
+sobelHorizontal = imfilter(double(grayImage), [-1, -2, -1; 0, 0, 0; 1, 2, 1]);
+sobelVertical = imfilter(double(grayImage), [-1, 0, 1; -2, 0, 2; -1, 0, 1]);
+% Combine the horizontal and vertical gradients
+sobelMagnitude = sqrt(sobelHorizontal.^2 + sobelVertical.^2);
+
+% Display the original and Sobel-filtered images
+figure;
+subplot(1, 2, 1);
+imshow(grayImage);
+title('Original Grayscale Image');
+subplot(1, 2, 2);
+imshow(sobelMagnitude, []);
+title('Sobel Edge Detection');
+
+% Laplacian Filter
+laplacianFiltered = double(grayImage) - del2(double(grayImage));
+% Display the original and Laplacian-filtered images
+figure;
+subplot(1, 2, 1);
+imshow(grayImage);
+title('Original Grayscale Image');
+subplot(1, 2, 2);
+imshow(laplacianFiltered, []);
+title('Laplacian Edge Detection');
+
+% Non-linear filtering (Bilateral Filter)
+% Note: 'imbilatfilt' might be a custom function, as it's not standard in MATLAB.
+filteredImage = imbilatfilt(originalImage);
+figure;
+subplot(1, 2, 1);
+imshow(originalImage);
+title('Original Image');
+subplot(1, 2, 2);
+imshow(filteredImage);
+title('Bilateral Filtered Image'); % Corrected title from 'bilateral Image'
