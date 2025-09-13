@@ -1,0 +1,74 @@
+
+
+Aim – A] Determination of edge detection using operators.  
+B] 2-D DFT & DCT  
+C] Filtering in the Frequency Domain
+
+
+1. Determination of edge detection using operators  
+
+Code -  
+
+% Read the image  
+I = imread('coins.png');  
+
+% Apply the Sobel operator for edge detection  
+edgeSobel = edge(I, 'sobel');  
+
+% Display the original and edge-detected images  
+figure;  
+
+subplot(1, 2, 1);  
+imshow(I);  
+title('Original Image');  
+
+subplot(1, 2, 2);  
+imshow(edgeSobel);  
+title('Edge Detection using Sobel Operator');  
+
+
+2. 2-D DFT & DCT
+
+Code :-  
+
+% Compute the 2-D Discrete Fourier Transform (DFT)  
+dftImage = fft2(double(I));  
+% Compute the 2-D Discrete Cosine Transform (DCT)  
+dctImage = dct2(double(I));  
+% Display the original, DFT, and DCT images  
+figure;  
+subplot(1, 3, 1);  
+imshow(I);  
+title('Original Image');  
+subplot(1, 3, 2);  
+imshow(log(abs(fftshift(dftImage)) + 1), []);  
+title('2-D DFT');  
+subplot(1, 3, 3);  
+imshow(dctImage);  
+title('2-D DCT');  
+
+
+3. Filtering in the Frequency Domain
+
+CODE:-
+
+% Compute the 2-D Discrete Fourier Transform (DFT)
+dftImage = fft2(double(I));
+
+% Design a high-pass filter
+filterSize = 20;
+highPassFilter = ones(size(I));
+highPassFilter(end/2 - filterSize:end/2 + filterSize, end/2 - filterSize:end/2 + filterSize) = 0;
+
+% Apply the high-pass filter in the frequency domain
+filteredImage = ifft2(dftImage .* highPassFilter); % Changed from * to .* for element-wise multiplication
+
+% Display the original and filtered images
+figure;
+subplot(1, 2, 1);
+imshow(I);
+title('Original Image');
+subplot(1, 2, 2);
+imshow(abs(filteredImage), []);
+title('Filtered Image (High-Pass Filter)');
+
