@@ -1,0 +1,77 @@
+Aim: 1)DWT of Images  
+2)Segmentation using watershed transform
+
+
+1] DWT of Images
+
+ Code:
+% Read an image
+originalImage = imread('car.jpg'); % replace 'your_image.jpg' with your image file
+
+% Convert the image to grayscale if it's in color
+if size(originalImage, 3) == 3
+    originalImage = rgb2gray(originalImage);
+end
+
+% Choose a wavelet and decomposition level
+wavelet = 'db1'; % you can choose a different wavelet, e.g., 'haar', 'db2', etc.
+level = 3; % adjust the decomposition level as needed
+
+% Perform the DWT
+[C, S] = wavedec2(originalImage, level, wavelet);
+
+% Display the original and decomposed images
+figure;
+subplot(2, 2, 1);
+imshow(originalImage);
+title('Original Image');
+
+for i = 1:level
+    % Approximation and detail coefficients for each level
+    A = appcoef2(C, S, wavelet, i);
+    H = detcoef2('h', C, S, i);
+    V = detcoef2('v', C, S, i);
+    D = detcoef2('d', C, S, i);
+    
+    % Reconstruct the image using coefficients
+    Arec = wrcoef2('a', C, S, wavelet, i);
+    Hrec = wrcoef2('h', C, S, wavelet, i);
+    Vrec = wrcoef2('v', C, S, wavelet, i);
+    Drec = wrcoef2('d', C, S, wavelet, i);
+    
+    reconstructedImage = Arec + Hrec + Vrec + Drec;
+    
+    % Display the decomposed images
+    subplot(2, 2, i + 1);
+    imshow(uint8(reconstructedImage));
+    title(['Level ', num2str(i)]);
+end
+
+
+
+2. Segmentation using watershed transform  
+
+Code:  
+
+% Load the image
+x = imbinarize(rgb2gray(imread('car.jpg')));
+subplot(1,2,1);
+imshow(x);
+title('Original Image');
+a = x;
+x = ~x;
+ms = bwdist(x);
+ms = 255 - uint8(ms);
+subplot(1,2,2);
+imshow(ms);
+title('Image after Distance Transformation');
+hs = watershed(ms);
+ws = hs == 0;
+figure;
+subplot(1,2,1);
+imshow(a | ws);
+title('Watershed Segmentation');
+subplot(1,2,2);
+imshow(label2rgb(hs));
+title('Segments with different color');
+
