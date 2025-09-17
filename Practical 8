@@ -9,44 +9,55 @@ C] Filtering in the Frequency Domain
 
 Code -  
 
-% Read the image  
-I = imread('coins.png');  
+% Read the image
+I = imread('goku.jpg');
 
-% Apply the Sobel operator for edge detection  
-edgeSobel = edge(I, 'sobel');  
+% Convert to grayscale
+Igray = rgb2gray(I);   % or im2gray(I) if you have R2020b+
 
-% Display the original and edge-detected images  
-figure;  
+% Apply the Sobel operator for edge detection
+edgeSobel = edge(Igray, 'sobel');
 
-subplot(1, 2, 1);  
-imshow(I);  
-title('Original Image');  
+% Display the original and edge-detected images
+figure;
 
-subplot(1, 2, 2);  
-imshow(edgeSobel);  
-title('Edge Detection using Sobel Operator');  
+subplot(1, 2, 1);
+imshow(I);
+title('Original Image');
+
+subplot(1, 2, 2);
+imshow(edgeSobel);
+title('Edge Detection using Sobel Operator');
+ 
 
 
 2. 2-D DFT & DCT
 
 Code :-  
 
-% Compute the 2-D Discrete Fourier Transform (DFT)  
-dftImage = fft2(double(I));  
-% Compute the 2-D Discrete Cosine Transform (DCT)  
-dctImage = dct2(double(I));  
-% Display the original, DFT, and DCT images  
-figure;  
-subplot(1, 3, 1);  
-imshow(I);  
-title('Original Image');  
-subplot(1, 3, 2);  
-imshow(log(abs(fftshift(dftImage)) + 1), []);  
-title('2-D DFT');  
-subplot(1, 3, 3);  
-imshow(dctImage);  
-title('2-D DCT');  
+% dft_dct_example.m  % <-- valid filename
+I = imread('d.jpg');        % MxNx3 (RGB)
+Igray = rgb2gray(I);           % MxN (2-D)
 
+% convert to double in [0,1] for display/processing
+IgrayD = im2double(Igray);
+
+% 2-D DFT and 2-D DCT (both accept 2-D arrays)
+dftImage = fft2(IgrayD);
+dctImage = dct2(IgrayD);
+
+figure;
+subplot(1,3,1), imshow(I), title('Original Image');
+
+subplot(1,3,2);
+% show log magnitude of centered DFT
+imshow(log(abs(fftshift(dftImage)) + 1), []);
+title('2-D DFT (log magnitude)');
+
+subplot(1,3,3);
+% display DCT (scale for visualization)
+imshow(mat2gray(dctImage));   % mat2gray scales to [0 1]
+title('2-D DCT');
 
 3. Filtering in the Frequency Domain
 
@@ -71,4 +82,36 @@ title('Original Image');
 subplot(1, 2, 2);
 imshow(abs(filteredImage), []);
 title('Filtered Image (High-Pass Filter)');
+
+
+
+or
+
+
+% highpass_freq_filter_example.m
+I = imread('goku.jpg');          % MxNx3 (RGB)
+Igray = im2gray(I);              % safe: handles already-grayscale too (R2020b+)
+Igray = im2double(Igray);        % convert to double in [0,1]
+
+% Compute 2-D DFT
+F = fft2(Igray);
+Fshift = fftshift(F);            % shift zero-frequency to center
+
+% Design an ideal high-pass mask (same size as image)
+[M,N] = size(Igray);
+[u,v] = meshgrid( (-floor(N/2)):(ceil(N/2)-1), (-floor(M/2)):(ceil(M/2)-1) );
+D = sqrt(u.^2 + v.^2);           % distance from center
+D0 = 30;                         % cutoff radius in pixels (tune this)
+HPmask = double(D > D0);         % ideal high-pass mask
+
+% Apply mask in frequency domain and invert transform
+Fshift_filtered = Fshift .* HPmask;
+F_filtered = ifftshift(Fshift_filtered);
+I_filtered = real(ifft2(F_filtered));
+
+% Display
+figure;
+subplot(1,2,1), imshow(I), title('Original (RGB)');
+subplot(1,2,2), imshow(mat2gray(I_filtered)), title('High-pass filtered (grayscale)');
+
 
