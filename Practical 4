@@ -3,31 +3,28 @@ Aim: age detection with gradient and convolution of an image
 
 code:
 
-%Program for edge detection algorithm  
-I=imread('beamer.jpg');  
-figure;  
-subplot(3,2,1)  
-imshow(I)  
-title ('original image');  
-h=ones(5,5)/25;  
-b=imfilter(I,h);  
-subplot(3,2,2)  
-imshow(b)  
-title ('filtered image');  
-c=edge(b,'sobel');  
-subplot(3,2,3)  
-imshow(c)  
-title ('sobel operator');  
-d=edge(b,'previtt');  
-subplot(3,2,4)  
-imshow(d)  
-title ('previtt operator');  
-e=edge(b,'roberts');  
-subplot(3,2,5)  
-imshow(e)  
-title ('robert operator');  
-f=edge(b,'canny');  
-subplot(3,2,6)  
-imshow(f);
-title ('canny operator');
+% Program for edge detection algorithm
+I = imread('goku.jpg');          % truecolor RGB image
+Igray = rgb2gray(I);             % convert to grayscale (2-D)
+
+figure;
+subplot(3,2,1), imshow(I), title('original image');
+
+% Filtering (on the grayscale image)
+h = ones(5,5)/25;
+b = imfilter(Igray, h);
+subplot(3,2,2), imshow(b), title('filtered image');
+
+% Now edge works because b is 2-D
+c = edge(b, 'sobel');
+subplot(3,2,3), imshow(c), title('sobel operator');
+
+d = edge(b, 'prewitt');
+subplot(3,2,4), imshow(d), title('prewitt operator');
+
+e = edge(b, 'roberts');
+subplot(3,2,5), imshow(e), title('robert operator');
+
+f = edge(b, 'canny');
+subplot(3,2,6), imshow(f), title('canny operator');
 
